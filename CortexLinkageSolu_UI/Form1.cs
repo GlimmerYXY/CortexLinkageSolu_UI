@@ -973,7 +973,7 @@ namespace CortexLinkageSolu_UI
             return name;
         }
         
-        //禁用规则
+        //禁用规则，并不需要具体的规则文件
         private void OnDeactivateMSF(int bwid, int feedid, string msfName)
         {
             try
@@ -996,7 +996,7 @@ namespace CortexLinkageSolu_UI
             }
         }
         
-        //激活规则
+        //激活规则，考虑修改读取路径
         private void OnActiveMSF(int bwid, int feedid, string msfName, string imsName)
         {
             try
