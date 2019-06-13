@@ -1007,7 +1007,7 @@ namespace CortexLinkageSolu_UI
                 int r1 = fsMSF.Read(msfByte, 0, msfByte.Length);
                 string msfStr = System.Text.Encoding.UTF8.GetString(msfByte);
                 fsMSF.Close();
-
+                //
                 FileStream fsIMS = new FileStream("./jingyingMSF/" + imsName, FileMode.OpenOrCreate, FileAccess.ReadWrite);
                 int imsLen = (int)fsIMS.Length;
                 byte[] imsByte = new byte[imsLen];
