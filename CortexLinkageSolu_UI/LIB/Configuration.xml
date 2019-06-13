@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Root>
+  <CameraProperty>
+    <Camera ID="8921_1" Name="E501-2门口" Font="Ariel" Size="12" Color="255,255,255,255" X="5" Y="260"></Camera>
+    <Camera ID="8921_2" Name="E501-4球机" Font="Ariel" Size="12" Color="255,255,255,255" X="5" Y="260"></Camera>
+    <!-- 摄像机属性（名称）,Color格式为(arbg),Font可到WINDOWS\Fonts目录下查找-->
+  </CameraProperty>
+  <OSDProperty>
+    <OSD Key="8921_1" RuleName="VMD1" Value="物体移动" Font="Ariel" Size="10" Color="255,255,0,0" X="5" Y="5"></OSD>
+    <OSD Key="8921_2" RuleName="徘徊监测1" Value="徘徊" Font="Ariel" Size="10" Color="255,255,0,0" X="5" Y="5"></OSD>
+  </OSDProperty>
+</Root>

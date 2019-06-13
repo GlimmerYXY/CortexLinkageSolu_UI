@@ -1,0 +1,200 @@
+[2018-10-11 19:08:59][Info] 正在连接服务器[192.168.1.161]，请稍后...... 
+[2018-10-11 19:10:47][Info] 与服务器[192.168.1.161]的连接断开 
+[2018-10-11 19:20:11][Info] 与服务器[192.168.1.161]连接成功 
+[2018-10-11 19:22:42][Info] 与服务器[192.168.1.161]的连接断开 
+[2018-10-11 19:27:03][Info] 与服务器[192.168.1.161]连接成功 
+[2018-10-11 19:29:25][Info] 与服务器[192.168.1.161]的连接断开 
+[2018-10-11 19:36:40][Info] 与服务器[192.168.1.161]连接成功 
+[2018-10-11 19:36:48][Info] 与服务器[192.168.1.161]的连接断开 
+[2018-10-11 19:47:08][Info] 正在连接服务器[192.168.1.161]，请稍后...... 
+[2018-10-11 19:47:08][Info] 与服务器[192.168.1.161]连接成功 
+[2018-10-11 19:50:35][Info] 与服务器[192.168.1.161]的连接断开 
+[2018-10-12 08:49:34][Info] 正在连接服务器[192.168.1.161]，请稍后...... 
+[2018-10-12 08:49:35][Info] 与服务器[192.168.1.161]连接成功 
+[2018-10-12 08:50:55][Info] 与服务器[192.168.1.161]的连接断开 
+[2018-10-12 08:50:56][Info] 与服务器[192.168.1.161]连接成功 
+[2018-10-12 08:52:16][Info] 与服务器[192.168.1.161]的连接断开 
+[2018-10-12 08:53:35][Info] 与服务器[192.168.1.161]连接成功 
+[2018-10-12 08:53:52][Info] 与服务器[192.168.1.161]的连接断开 
+[2018-10-12 08:54:05][Info] 与服务器[192.168.1.161]连接成功 
+[2018-10-12 08:56:38][Info] 与服务器[192.168.1.161]的连接断开 
+[2018-10-12 09:11:38][Info] 与服务器[192.168.1.161]连接成功 
+[2018-10-12 09:13:52][Info] 与服务器[192.168.1.161]的连接断开 
+[2018-10-12 09:24:37][Info] 与服务器[192.168.1.161]连接成功 
+[2018-10-12 09:27:19][Info] 与服务器[192.168.1.161]的连接断开 
+[2018-10-12 09:31:14][Info] 与服务器[192.168.1.161]连接成功 
+[2018-10-12 09:33:37][Info] 与服务器[192.168.1.161]的连接断开 
+[2018-10-12 09:37:01][Info] 与服务器[192.168.1.161]连接成功 
+[2018-10-12 09:38:12][Info] 与服务器[192.168.1.161]的连接断开 
+[2018-10-12 09:41:20][Info] 与服务器[192.168.1.161]连接成功 
+[2018-10-12 09:42:41][Info] 与服务器[192.168.1.161]的连接断开 
+[2018-10-12 09:52:05][Info] 与服务器[192.168.1.161]连接成功 
+[2018-10-12 09:57:38][Info] 与服务器[192.168.1.161]的连接断开 
+[2018-10-12 10:24:34][Info] 正在连接服务器[192.168.1.161]，请稍后...... 
+[2018-10-12 10:24:34][Info] 与服务器[192.168.1.161]连接成功 
+[2018-10-12 10:26:40][Info] 与服务器[192.168.1.161]的连接断开 
+[2018-10-12 10:45:48][Info] 正在连接服务器[192.168.1.161]，请稍后...... 
+[2018-10-12 10:45:49][Info] 与服务器[192.168.1.161]连接成功 
+[2018-10-12 10:46:51][Info] 与服务器[192.168.1.161]的连接断开 
+[2018-10-12 10:47:15][Info] 与服务器[192.168.1.161]连接成功 
+[2018-10-12 10:50:45][Info] 正在连接服务器[192.168.1.161]，请稍后...... 
+[2018-10-12 10:50:45][Info] 与服务器[192.168.1.161]连接成功 
+[2018-10-12 10:55:24][Info] 正在连接服务器[192.168.1.161]，请稍后...... 
+[2018-10-12 10:55:25][Info] 与服务器[192.168.1.161]连接成功 
+[2018-10-12 10:56:56][Info] 与服务器[192.168.1.161]的连接断开 
+[2018-10-12 11:13:03][Info] 与服务器[192.168.1.161]连接成功 
+[2018-10-12 11:15:17][Info] 与服务器[192.168.1.161]的连接断开 
+[2018-10-12 11:41:35][Info] 正在连接服务器[192.168.1.161]，请稍后...... 
+[2018-10-12 11:41:40][Info] 与服务器[192.168.1.161]连接成功 
+[2018-10-12 11:43:14][Info] 与服务器[192.168.1.161]的连接断开 
+[2018-10-12 11:47:53][Info] 与服务器[192.168.1.161]连接成功 
+[2018-10-12 11:50:44][Info] 与服务器[192.168.1.161]的连接断开 
+[2018-10-12 11:51:00][Info] 与服务器[192.168.1.161]连接成功 
+[2018-10-12 11:52:02][Info] 与服务器[192.168.1.161]的连接断开 
+[2018-10-12 11:53:03][Info] 正在连接服务器[192.168.1.161]，请稍后...... 
+[2018-10-12 11:58:51][Info] 正在连接服务器[192.168.1.161]，请稍后...... 
+[2018-10-12 11:58:51][Info] 与服务器[192.168.1.161]连接成功 
+[2018-10-12 13:36:37][Info] 正在连接服务器[192.168.1.161]，请稍后...... 
+[2018-10-12 13:36:37][Info] 与服务器[192.168.1.161]连接成功 
+[2018-10-12 13:38:06][Info] 与服务器[192.168.1.161]的连接断开 
+[2018-10-12 13:38:25][Info] 与服务器[192.168.1.161]连接成功 
+[2018-10-12 13:48:37][Info] 与服务器[192.168.1.161]的连接断开 
+[2018-10-12 13:49:43][Info] 与服务器[192.168.1.161]连接成功 
+[2018-10-12 13:49:51][Info] 与服务器[192.168.1.161]的连接断开 
+[2018-10-12 13:50:04][Info] 与服务器[192.168.1.161]连接成功 
+[2018-10-12 13:50:12][Info] 与服务器[192.168.1.161]的连接断开 
+[2018-10-12 13:50:35][Info] 与服务器[192.168.1.161]连接成功 
+[2018-10-12 13:56:34][Info] 正在连接服务器[192.168.1.161]，请稍后...... 
+[2018-10-12 13:56:34][Info] 与服务器[192.168.1.161]连接成功 
+[2018-10-12 14:06:28][Info] 与服务器[192.168.1.161]的连接断开 
+[2018-10-12 14:12:16][Info] 正在连接服务器[192.168.1.161]，请稍后...... 
+[2018-10-12 14:12:16][Info] 与服务器[192.168.1.161]连接成功 
+[2018-10-12 14:18:12][Info] 正在连接服务器[192.168.1.161]，请稍后...... 
+[2018-10-12 14:18:13][Info] 与服务器[192.168.1.161]连接成功 
+[2018-10-12 14:22:14][Info] 正在连接服务器[192.168.1.161]，请稍后...... 
+[2018-10-12 14:22:15][Info] 与服务器[192.168.1.161]连接成功 
+[2018-10-12 19:10:14][Info] 正在连接服务器[192.168.1.161]，请稍后...... 
+[2018-10-12 19:10:14][Info] 与服务器[192.168.1.161]连接成功 
+[2018-10-13 09:46:55][Info] 正在连接服务器[192.168.1.161]，请稍后...... 
+[2018-10-13 09:52:05][Info] 正在连接服务器[192.168.1.161]，请稍后...... 
+[2018-10-13 09:54:48][Info] 正在连接服务器[192.168.1.161]，请稍后...... 
+[2018-10-13 09:55:07][Info] 与服务器[192.168.1.161]连接成功 
+[2018-10-13 09:57:57][Info] 与服务器[192.168.1.161]的连接断开 
+[2018-10-13 13:41:38][Info] 正在连接服务器[192.168.1.161]，请稍后...... 
+[2018-10-13 13:41:46][Info] 与服务器[192.168.1.161]连接成功 
+[2018-10-13 14:10:37][Info] 正在连接服务器[192.168.1.161]，请稍后...... 
+[2018-10-13 14:10:37][Info] 与服务器[192.168.1.161]连接成功 
+[2018-10-13 14:25:01][Info] 与服务器[192.168.1.161]的连接断开 
+[2018-10-13 14:51:58][Info] 与服务器[192.168.1.161]连接成功 
+[2018-10-13 17:38:04][Info] 与服务器[192.168.1.161]的连接断开 
+[2018-10-13 17:38:10][Info] 与服务器[192.168.1.161]连接成功 
+[2018-10-13 17:44:10][Info] 与服务器[192.168.1.161]的连接断开 
+[2018-10-13 17:44:11][Info] 与服务器[192.168.1.161]连接成功 
+[2018-10-13 17:46:43][Info] 与服务器[192.168.1.161]的连接断开 
+[2018-10-13 17:47:08][Info] 与服务器[192.168.1.161]连接成功 
+[2018-10-13 17:48:19][Info] 与服务器[192.168.1.161]的连接断开 
+[2018-10-13 17:48:27][Info] 与服务器[192.168.1.161]连接成功 
+[2018-10-13 17:49:56][Info] 与服务器[192.168.1.161]的连接断开 
+[2018-10-13 17:51:48][Info] 与服务器[192.168.1.161]连接成功 
+[2018-10-13 17:58:42][Info] 与服务器[192.168.1.161]的连接断开 
+[2018-10-13 18:18:20][Info] 与服务器[192.168.1.161]连接成功 
+[2018-10-13 18:34:59][Info] 与服务器[192.168.1.161]的连接断开 
+[2018-10-13 18:35:27][Info] 与服务器[192.168.1.161]连接成功 
+[2018-10-13 18:44:54][Info] 与服务器[192.168.1.161]的连接断开 
+[2018-10-13 18:45:01][Info] 与服务器[192.168.1.161]连接成功 
+[2018-10-13 18:57:58][Info] 与服务器[192.168.1.161]的连接断开 
+[2018-10-13 19:00:54][Info] 与服务器[192.168.1.161]连接成功 
+[2018-10-13 19:02:01][Info] 与服务器[192.168.1.161]的连接断开 
+[2018-10-13 19:02:01][Info] 与服务器[192.168.1.161]连接成功 
+[2018-10-13 19:02:46][Info] 与服务器[192.168.1.161]的连接断开 
+[2018-10-13 19:16:48][Info] 与服务器[192.168.1.161]连接成功 
+[2018-10-15 09:50:01][Info] 正在连接服务器[192.168.1.161]，请稍后...... 
+[2018-10-15 09:50:02][Info] 与服务器[192.168.1.161]连接成功 
+[2018-10-15 09:53:28][Info] 正在连接服务器[192.168.1.161]，请稍后...... 
+[2018-10-15 09:53:28][Info] 与服务器[192.168.1.161]连接成功 
+[2018-10-15 09:54:45][Info] 与服务器[192.168.1.161]连接成功 
+[2018-10-15 09:54:45][Info] 正在连接服务器[192.168.1.161]，请稍后...... 
+[2018-10-15 09:57:17][Info] 正在连接服务器[192.168.1.161]，请稍后...... 
+[2018-10-15 09:57:17][Info] 与服务器[192.168.1.161]连接成功 
+[2018-10-15 09:59:28][Info] 与服务器[192.168.1.161]连接成功 
+[2018-10-15 09:59:28][Info] 正在连接服务器[192.168.1.161]，请稍后...... 
+[2018-10-15 10:04:17][Info] 正在连接服务器[192.168.1.161]，请稍后...... 
+[2018-10-15 10:04:17][Info] 与服务器[192.168.1.161]连接成功 
+[2018-10-15 13:56:32][Info] 正在连接服务器[192.168.1.161]，请稍后...... 
+[2018-10-15 13:56:33][Info] 与服务器[192.168.1.161]连接成功 
+[2018-10-16 09:50:56][Info] 正在连接服务器[192.168.1.161]，请稍后...... 
+[2018-10-16 09:50:56][Info] 与服务器[192.168.1.161]连接成功 
+[2018-10-17 17:59:23][Info] 正在连接服务器[192.168.1.161]，请稍后...... 
+[2018-10-17 17:59:23][Info] 与服务器[192.168.1.161]连接成功 
+[2018-10-17 18:00:16][Info] 与服务器[192.168.1.161]的连接断开 
+[2018-10-17 18:02:56][Info] 与服务器[192.168.1.161]连接成功 
+[2018-10-17 18:05:37][Info] 与服务器[192.168.1.161]的连接断开 
+[2018-10-17 18:09:44][Info] 与服务器[192.168.1.161]连接成功 
+[2018-10-17 18:12:34][Info] 与服务器[192.168.1.161]的连接断开 
+[2018-10-17 18:12:56][Info] 与服务器[192.168.1.161]连接成功 
+[2018-10-17 18:16:40][Info] 与服务器[192.168.1.161]的连接断开 
+[2018-10-17 18:21:17][Info] 与服务器[192.168.1.161]连接成功 
+[2018-10-17 18:28:55][Info] 与服务器[192.168.1.161]的连接断开 
+[2018-10-22 19:10:53][Info] 正在连接服务器[192.168.1.161]，请稍后...... 
+[2018-10-22 19:10:53][Info] 与服务器[192.168.1.161]连接成功 
+[2018-10-22 19:30:23][Info] 与服务器[192.168.1.161]的连接断开 
+[2018-11-05 16:02:10][Info] 对路径“C:\Program Files\VCA\bin\jpbs\Viewer\”的访问被拒绝。   在 System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   在 System.IO.Directory.InternalCreateDirectory(String fullPath, String path, DirectorySecurity dirSecurity)
+   在 System.IO.Directory.CreateDirectory(String path, DirectorySecurity directorySecurity)
+   在 System.IO.Directory.CreateDirectory(String path)
+   在 CortexAPILib.CortexAPI.GetApiRegParams() 位置 G:\VCA-VCAServer多级\cortexapi\cortexapilib\CortexApi.cs:行号 637
+   在 CortexAPILib.CortexAPI..ctor(String deviceName, enDeviceType deviceType, Control owner, Boolean sendStatusMessage, IVideoThread iVideoThread, ICommunicationProvider iCommunicationProvider, String remoteIP, Int32 remotePort) 位置 G:\VCA-VCAServer多级\cortexapi\cortexapilib\CortexApi.cs:行号 406
+   在 CortexAPILib.CortexAPI..ctor(String deviceName, enDeviceType deviceType, Control owner, Boolean sendStatusMessage) 位置 G:\VCA-VCAServer多级\cortexapi\cortexapilib\CortexApi.cs:行号 363
+   在 CortexAPILib.CortexAPI..ctor(String deviceName, enDeviceType deviceType, Control owner) 位置 G:\VCA-VCAServer多级\cortexapi\cortexapilib\CortexApi.cs:行号 358
+   在 CortexAPILib.CortexAPI..ctor(String deviceName, enDeviceType deviceType) 位置 G:\VCA-VCAServer多级\cortexapi\cortexapilib\CortexApi.cs:行号 353
+   在 MiniCortexViewer.Form1..ctor() 位置 G:\VCA-VCAServer多级\MiniCortexViewer\Form1.cs:行号 49 
+[2018-11-06 13:38:08][Info] 对路径“C:\Program Files\VCA\bin\jpbs\Viewer\”的访问被拒绝。   在 System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   在 System.IO.Directory.InternalCreateDirectory(String fullPath, String path, DirectorySecurity dirSecurity)
+   在 System.IO.Directory.CreateDirectory(String path, DirectorySecurity directorySecurity)
+   在 System.IO.Directory.CreateDirectory(String path)
+   在 CortexAPILib.CortexAPI.GetApiRegParams() 位置 G:\VCA-VCAServer多级\cortexapi\cortexapilib\CortexApi.cs:行号 637
+   在 CortexAPILib.CortexAPI..ctor(String deviceName, enDeviceType deviceType, Control owner, Boolean sendStatusMessage, IVideoThread iVideoThread, ICommunicationProvider iCommunicationProvider, String remoteIP, Int32 remotePort) 位置 G:\VCA-VCAServer多级\cortexapi\cortexapilib\CortexApi.cs:行号 406
+   在 CortexAPILib.CortexAPI..ctor(String deviceName, enDeviceType deviceType, Control owner, Boolean sendStatusMessage) 位置 G:\VCA-VCAServer多级\cortexapi\cortexapilib\CortexApi.cs:行号 363
+   在 CortexAPILib.CortexAPI..ctor(String deviceName, enDeviceType deviceType, Control owner) 位置 G:\VCA-VCAServer多级\cortexapi\cortexapilib\CortexApi.cs:行号 358
+   在 CortexAPILib.CortexAPI..ctor(String deviceName, enDeviceType deviceType) 位置 G:\VCA-VCAServer多级\cortexapi\cortexapilib\CortexApi.cs:行号 353
+   在 MiniCortexViewer.Form1..ctor() 位置 G:\VCA-VCAServer多级\MiniCortexViewer\Form1.cs:行号 49 
+[2018-11-07 17:20:06][Info] 对路径“C:\Program Files\VCA\bin\jpbs\Viewer\”的访问被拒绝。   在 System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   在 System.IO.Directory.InternalCreateDirectory(String fullPath, String path, DirectorySecurity dirSecurity)
+   在 System.IO.Directory.CreateDirectory(String path, DirectorySecurity directorySecurity)
+   在 System.IO.Directory.CreateDirectory(String path)
+   在 CortexAPILib.CortexAPI.GetApiRegParams() 位置 G:\VCA-VCAServer多级\cortexapi\cortexapilib\CortexApi.cs:行号 637
+   在 CortexAPILib.CortexAPI..ctor(String deviceName, enDeviceType deviceType, Control owner, Boolean sendStatusMessage, IVideoThread iVideoThread, ICommunicationProvider iCommunicationProvider, String remoteIP, Int32 remotePort) 位置 G:\VCA-VCAServer多级\cortexapi\cortexapilib\CortexApi.cs:行号 406
+   在 CortexAPILib.CortexAPI..ctor(String deviceName, enDeviceType deviceType, Control owner, Boolean sendStatusMessage) 位置 G:\VCA-VCAServer多级\cortexapi\cortexapilib\CortexApi.cs:行号 363
+   在 CortexAPILib.CortexAPI..ctor(String deviceName, enDeviceType deviceType, Control owner) 位置 G:\VCA-VCAServer多级\cortexapi\cortexapilib\CortexApi.cs:行号 358
+   在 CortexAPILib.CortexAPI..ctor(String deviceName, enDeviceType deviceType) 位置 G:\VCA-VCAServer多级\cortexapi\cortexapilib\CortexApi.cs:行号 353
+   在 MiniCortexViewer.Form1..ctor() 位置 G:\VCA-VCAServer多级\MiniCortexViewer\Form1.cs:行号 49 
+[2018-11-07 17:30:53][Info] 对路径“C:\Program Files\VCA\bin\jpbs\Viewer\”的访问被拒绝。   在 System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   在 System.IO.Directory.InternalCreateDirectory(String fullPath, String path, DirectorySecurity dirSecurity)
+   在 System.IO.Directory.CreateDirectory(String path, DirectorySecurity directorySecurity)
+   在 System.IO.Directory.CreateDirectory(String path)
+   在 CortexAPILib.CortexAPI.GetApiRegParams() 位置 G:\VCA-VCAServer多级\cortexapi\cortexapilib\CortexApi.cs:行号 637
+   在 CortexAPILib.CortexAPI..ctor(String deviceName, enDeviceType deviceType, Control owner, Boolean sendStatusMessage, IVideoThread iVideoThread, ICommunicationProvider iCommunicationProvider, String remoteIP, Int32 remotePort) 位置 G:\VCA-VCAServer多级\cortexapi\cortexapilib\CortexApi.cs:行号 406
+   在 CortexAPILib.CortexAPI..ctor(String deviceName, enDeviceType deviceType, Control owner, Boolean sendStatusMessage) 位置 G:\VCA-VCAServer多级\cortexapi\cortexapilib\CortexApi.cs:行号 363
+   在 CortexAPILib.CortexAPI..ctor(String deviceName, enDeviceType deviceType, Control owner) 位置 G:\VCA-VCAServer多级\cortexapi\cortexapilib\CortexApi.cs:行号 358
+   在 CortexAPILib.CortexAPI..ctor(String deviceName, enDeviceType deviceType) 位置 G:\VCA-VCAServer多级\cortexapi\cortexapilib\CortexApi.cs:行号 353
+   在 MiniCortexViewer.Form1..ctor() 位置 G:\VCA-VCAServer多级\MiniCortexViewer\Form1.cs:行号 49 
+[2018-11-07 21:42:45][Info] 对路径“C:\Program Files\VCA\bin\jpbs\Viewer\”的访问被拒绝。   在 System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   在 System.IO.Directory.InternalCreateDirectory(String fullPath, String path, DirectorySecurity dirSecurity)
+   在 System.IO.Directory.CreateDirectory(String path, DirectorySecurity directorySecurity)
+   在 System.IO.Directory.CreateDirectory(String path)
+   在 CortexAPILib.CortexAPI.GetApiRegParams() 位置 G:\VCA-VCAServer多级\cortexapi\cortexapilib\CortexApi.cs:行号 637
+   在 CortexAPILib.CortexAPI..ctor(String deviceName, enDeviceType deviceType, Control owner, Boolean sendStatusMessage, IVideoThread iVideoThread, ICommunicationProvider iCommunicationProvider, String remoteIP, Int32 remotePort) 位置 G:\VCA-VCAServer多级\cortexapi\cortexapilib\CortexApi.cs:行号 406
+   在 CortexAPILib.CortexAPI..ctor(String deviceName, enDeviceType deviceType, Control owner, Boolean sendStatusMessage) 位置 G:\VCA-VCAServer多级\cortexapi\cortexapilib\CortexApi.cs:行号 363
+   在 CortexAPILib.CortexAPI..ctor(String deviceName, enDeviceType deviceType, Control owner) 位置 G:\VCA-VCAServer多级\cortexapi\cortexapilib\CortexApi.cs:行号 358
+   在 CortexAPILib.CortexAPI..ctor(String deviceName, enDeviceType deviceType) 位置 G:\VCA-VCAServer多级\cortexapi\cortexapilib\CortexApi.cs:行号 353
+   在 MiniCortexViewer.Form1..ctor() 位置 G:\VCA-VCAServer多级\MiniCortexViewer\Form1.cs:行号 49 
+[2018-11-13 13:39:51][Info] 对路径“C:\Program Files\VCA\bin\jpbs\Viewer\”的访问被拒绝。   在 System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   在 System.IO.Directory.InternalCreateDirectory(String fullPath, String path, DirectorySecurity dirSecurity)
+   在 System.IO.Directory.CreateDirectory(String path, DirectorySecurity directorySecurity)
+   在 System.IO.Directory.CreateDirectory(String path)
+   在 CortexAPILib.CortexAPI.GetApiRegParams() 位置 G:\VCA-VCAServer多级\cortexapi\cortexapilib\CortexApi.cs:行号 637
+   在 CortexAPILib.CortexAPI..ctor(String deviceName, enDeviceType deviceType, Control owner, Boolean sendStatusMessage, IVideoThread iVideoThread, ICommunicationProvider iCommunicationProvider, String remoteIP, Int32 remotePort) 位置 G:\VCA-VCAServer多级\cortexapi\cortexapilib\CortexApi.cs:行号 406
+   在 CortexAPILib.CortexAPI..ctor(String deviceName, enDeviceType deviceType, Control owner, Boolean sendStatusMessage) 位置 G:\VCA-VCAServer多级\cortexapi\cortexapilib\CortexApi.cs:行号 363
+   在 CortexAPILib.CortexAPI..ctor(String deviceName, enDeviceType deviceType, Control owner) 位置 G:\VCA-VCAServer多级\cortexapi\cortexapilib\CortexApi.cs:行号 358
+   在 CortexAPILib.CortexAPI..ctor(String deviceName, enDeviceType deviceType) 位置 G:\VCA-VCAServer多级\cortexapi\cortexapilib\CortexApi.cs:行号 353
+   在 MiniCortexViewer.Form1..ctor() 位置 G:\VCA-VCAServer多级\MiniCortexViewer\Form1.cs:行号 49 
