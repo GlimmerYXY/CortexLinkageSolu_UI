@@ -100,7 +100,7 @@ namespace CortexLinkageSolu_UI
         private Dictionary<string, ST_AlarmInfo> dicAlarmInfo = new Dictionary<string, ST_AlarmInfo>();
         private int lastMode = -1;
         
-        /**********************************  HIKVISION  **********************************/
+        /**********************************  HIKVISION（没用到）  **********************************/
         private string DVRIPAddress;    //门禁管理机 IP地址或者域名
         private Int16 DVRPortNumber;    //门禁管理机 服务端口号
         private string DVRUserName;     //门禁管理机 登录用户名
@@ -135,6 +135,9 @@ namespace CortexLinkageSolu_UI
         private int silenceTime3;    //频率3下每次静默时长
 
         private int intrudeDelay;    // 停止声波盾
+
+        private string mp3path;      //mp3路径
+        private int mp3delay;        //mp3播放完毕，延时启动声波盾
 
         /**********************************  联动  **********************************/
         private bool isRun = false;
@@ -226,6 +229,9 @@ namespace CortexLinkageSolu_UI
                 silenceTime3 = int.Parse(config.AppSettings.Settings["silenceTime3"].Value);
 
                 intrudeDelay = int.Parse(config.AppSettings.Settings["intrudeDelay"].Value);
+
+                mp3path = config.AppSettings.Settings["mp3path"].Value;
+                mp3delay = int.Parse(config.AppSettings.Settings["mp3delay"].Value);
             }
             catch (Exception ex)
             {
@@ -482,6 +488,15 @@ namespace CortexLinkageSolu_UI
         {
             try
             {
+                new MCIPlayer().Play(mp3path, 1);
+            }
+            catch (Exception e)
+            {
+                WriteLog("播放本地mp3失败！\t" + e.Message + e.StackTrace);
+            }
+            Thread.Sleep(mp3delay * 1000);  //延时启动声波盾
+            try
+            {
                 IPAddress ip = IPAddress.Parse(soundWaveShieldIP);
                 byte[] recByte = new byte[1024];
                 int bytes;
@@ -509,7 +524,7 @@ namespace CortexLinkageSolu_UI
                             bytes = clientSocket.Receive(recByte, recByte.Length, 0);
                             recStr = Encoding.ASCII.GetString(recByte, 0, bytes);
                             WriteLog("发送11\t接收" + recStr);
-                            Thread.Sleep(1000);
+                            //Thread.Sleep(1000);
                         }
                         else if(yuanNum > 0)    //只有入侵检测远，按远的模式-断续响
                         {
