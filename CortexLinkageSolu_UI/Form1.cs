@@ -16,6 +16,9 @@ using CortexAPILib;
 using CortexAPILib.CrtxApiTypes;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
+using Newtonsoft.Json;
+using MySql.Data.MySqlClient;
+using Newtonsoft.Json.Linq;
 
 namespace CortexLinkageSolu_UI
 {
@@ -24,67 +27,6 @@ namespace CortexLinkageSolu_UI
         public int flag;       //操作类型：0-禁用规则；1-激活规则；2-调整预置位；3-延时
         public int camera;     //操作对象：（相机编号）1-相机1；2-相机2
         public string detail;  //操作参数：规则名称、预置位编号、延时时长(秒)
-    }
-
-    // Defines the data protocol for reading and writing strings on our stream
-    public class StreamString
-    {
-        private Stream ioStream;
-
-        private UnicodeEncoding streamEncoding;
-
-        public StreamString(Stream ioStream)
-        {
-            this.ioStream = ioStream;
-            streamEncoding = new UnicodeEncoding();
-        }
-
-        public string ReadString()
-        {
-            int len = 0;
-
-            len = ioStream.ReadByte() * 256;
-            len += ioStream.ReadByte();
-            byte[] inBuffer = new byte[len];
-            ioStream.Read(inBuffer, 0, len);
-
-            return streamEncoding.GetString(inBuffer);
-        }
-
-        public int WriteString(string outString)
-        {
-            byte[] outBuffer = streamEncoding.GetBytes(outString);
-            int len = outBuffer.Length;
-            if (len > UInt16.MaxValue)
-            {
-                len = (int)UInt16.MaxValue;
-            }
-            ioStream.WriteByte((byte)(len / 256));
-            ioStream.WriteByte((byte)(len & 255));
-            ioStream.Write(outBuffer, 0, len);
-            ioStream.Flush();
-
-            return outBuffer.Length + 2;
-        }
-    }
-
-    // Contains the method executed in the context of the impersonated user
-    public class ReadFileToStream
-    {
-        private string fn;
-        private StreamString ss;
-
-        public ReadFileToStream(StreamString str, string filename)
-        {
-            fn = filename;
-            ss = str;
-        }
-
-        public void Start()
-        {
-            string contents = File.ReadAllText(fn);
-            ss.WriteString(contents);
-        }
     }
 
     public partial class Form1 : Form
@@ -96,25 +38,22 @@ namespace CortexLinkageSolu_UI
         private string serverIP;     // cortex服务器IP
         private int scannerID;       // 分析引擎ID，也就是BehaviourWatch的ID
 
-        //private ST_AlarmInfo alarmInfo = new ST_AlarmInfo();
-        private Dictionary<string, ST_AlarmInfo> dicAlarmInfo = new Dictionary<string, ST_AlarmInfo>();
-        private int lastMode = -1;
-        
         /**********************************  HIKVISION（没用到）  **********************************/
-        private string DVRIPAddress;    //门禁管理机 IP地址或者域名
-        private Int16 DVRPortNumber;    //门禁管理机 服务端口号
-        private string DVRUserName;     //门禁管理机 登录用户名
-        private string DVRPassword;     //门禁管理机 登录密码
-        private string SDKPath;         //海康SDK 所在路径
+        //private string DVRIPAddress;    //门禁管理机 IP地址或者域名
+        //private Int16 DVRPortNumber;    //门禁管理机 服务端口号
+        //private string DVRUserName;     //门禁管理机 登录用户名
+        //private string DVRPassword;     //门禁管理机 登录密码
+        //private string SDKPath;         //海康SDK 所在路径
 
-        private uint iLastErr = 0;
-        private Int32 m_lUserID = -1;
-        private Int32 m_lAlarmHandle = -1;
-        private byte m_byDoorStatus;
+        //private uint iLastErr = 0;
+        //private Int32 m_lUserID = -1;
+        //private Int32 m_lAlarmHandle = -1;
+        //private byte m_byDoorStatus;
+        //private CHCNetSDK.NET_DVR_DEVICEINFO_V30 DeviceInfo = new CHCNetSDK.NET_DVR_DEVICEINFO_V30();
+        //private CHCNetSDK.MSGCallBack_V31 m_falarmData_V31 = null;
+
         private int preDoor = -2;
         private int curDoor = -1;
-        private CHCNetSDK.NET_DVR_DEVICEINFO_V30 DeviceInfo = new CHCNetSDK.NET_DVR_DEVICEINFO_V30();
-        private CHCNetSDK.MSGCallBack_V31 m_falarmData_V31 = null;
 
         /**********************************  声波盾  **********************************/
         private string soundWaveShieldIP;   //声波盾控制器IP
@@ -147,6 +86,10 @@ namespace CortexLinkageSolu_UI
         private bool isIdentify = false;
         private bool aCircle = true;
 
+        //private AlarmInfo alarmInfo = new AlarmInfo();
+        private Dictionary<string, AlarmInfo> dicAlarmInfo = new Dictionary<string, AlarmInfo>();
+        private int lastMode = -1;
+
         private int jinNum = 0;
         private int yuanNum = 0;
         private string latestAlarmId;       //最新报警的ID
@@ -167,16 +110,27 @@ namespace CortexLinkageSolu_UI
         private int openOpeNumber; //开门流程下操作数量
         private Queue<Operate> openOperate = new Queue<Operate>();
 
+        private string genboxIP;
+        private string connStr;
+        private LinkageObj initializeObj;
+        private LinkageObj openObj;
+        private LinkageObj closeObj;
+        private int opa4tNum = 0;
+        private List<string> opa4tList = new List<string>();
+
         #endregion
 
         public Form1()
         {
             InitializeComponent();
-            AccessAppSettings();//获取配置参数
+            //AccessAppConfig();
+            AccessLinkageJson();
+
+            GetDbUuid();
         }
 
-        //获取配置参数
-        private void AccessAppSettings()
+        //方案一：获取配置参数
+        private void AccessAppConfig()
         {
             try
             {
@@ -205,11 +159,11 @@ namespace CortexLinkageSolu_UI
                     closeOperate.Enqueue(tmp);
                 }
 
-                DVRIPAddress = config.AppSettings.Settings["DVRIPAddress"].Value;
-                DVRPortNumber = Int16.Parse(config.AppSettings.Settings["DVRPortNumber"].Value);
-                DVRUserName = config.AppSettings.Settings["DVRUserName"].Value;
-                DVRPassword = config.AppSettings.Settings["DVRPassword"].Value;
-                SDKPath = config.AppSettings.Settings["SDKPath"].Value;
+                //DVRIPAddress = config.AppSettings.Settings["DVRIPAddress"].Value;
+                //DVRPortNumber = Int16.Parse(config.AppSettings.Settings["DVRPortNumber"].Value);
+                //DVRUserName = config.AppSettings.Settings["DVRUserName"].Value;
+                //DVRPassword = config.AppSettings.Settings["DVRPassword"].Value;
+                //SDKPath = config.AppSettings.Settings["SDKPath"].Value;
 
                 soundWaveShieldIP = config.AppSettings.Settings["soundWaveShieldIP"].Value;
                 soundWaveShieldPort = int.Parse(config.AppSettings.Settings["soundWaveShieldPort"].Value);
@@ -232,6 +186,9 @@ namespace CortexLinkageSolu_UI
 
                 mp3path = config.AppSettings.Settings["mp3path"].Value;
                 mp3delay = int.Parse(config.AppSettings.Settings["mp3delay"].Value);
+
+                genboxIP = config.AppSettings.Settings["genboxIP"].Value;
+                connStr = config.AppSettings.Settings["connStr"].Value;
             }
             catch (Exception ex)
             {
@@ -239,7 +196,54 @@ namespace CortexLinkageSolu_UI
             }
         }
         
-        //管道通信
+        //方案二：获取联动信息
+        private void AccessLinkageJson()
+        {
+            try
+            {
+                string jsonFile = "D://initialize_linkage.json";
+                using (StreamReader file = new StreamReader(jsonFile))
+                {
+                    string json = file.ReadToEnd();
+                    LinkageObj initializeObj = JsonConvert.DeserializeObject<LinkageObj>(json);
+                }
+            }
+            catch (Exception ex)
+            {
+                WriteLog("读取D://initialize_linkage.json失败！" + ex.Message + ex.StackTrace);
+            }
+
+            try
+            {
+                string jsonFile = "D://open_linkage.json";
+                using (StreamReader file = new StreamReader(jsonFile))
+                {
+                    string json = file.ReadToEnd();
+                    LinkageObj openObj = JsonConvert.DeserializeObject<LinkageObj>(json);
+                }
+            }
+            catch (Exception ex)
+            {
+                WriteLog("读取D://open_linkage.json失败！" + ex.Message + ex.StackTrace);
+            }
+
+            try
+            {
+                string jsonFile = "D://close_linkage.json";
+                using (StreamReader file = new StreamReader(jsonFile))
+                {
+                    string json = file.ReadToEnd();
+                    LinkageObj closeObj = JsonConvert.DeserializeObject<LinkageObj>(json);
+                }
+            }
+            catch (Exception ex)
+            {
+                WriteLog("读取D://close_linkage.json失败！" + ex.Message + ex.StackTrace);
+            }
+
+        }
+
+        //管道通信（没用）
         private void ServerPipe()
         {
             try
@@ -258,36 +262,6 @@ namespace CortexLinkageSolu_UI
                 ss.WriteString("");
 
                 pipeServer.Close();
-            }
-            catch (Exception ex)
-            {
-                WriteLog(ex.Message + ex.StackTrace);
-            }
-        }
-
-        /**********************************  联动  **********************************/
-        #region 联动
-        
-        //恢复全局变量
-        private void ResetGlobalVar()
-        {
-            isAuto = false;
-            aCircle = true;
-            isRuqin = false;
-            allowSound = false;
-            isIdentify = false;
-        }
-
-        //进入初始状态
-        private void Initialize()
-        {
-            try
-            {
-                OnControlPTZ(scannerID, 1, 1);
-                OnActiveMSF(scannerID, 1, "ruqinyanhuozhiliu1.msf", "ruqinyanhuozhiliu1.ims");
-                OnControlPTZ(scannerID, 2, 1);
-                OnActiveMSF(scannerID, 2, "ruqinyanhuozhiliu2.msf", "ruqinyanhuozhiliu2.ims");
-                OnActiveMSF(scannerID, 2, "renlian2.msf", "renlian2.ims");
             }
             catch (Exception ex)
             {
@@ -328,34 +302,30 @@ namespace CortexLinkageSolu_UI
             }));
         }
 
-        //通知海康门口机开门
-        private void InformRemoteControl(string msg)
+        /**********************************  联动  **********************************/
+        #region 联动
+
+        //恢复全局变量
+        private void ResetGlobalVar()
+        {
+            isAuto = false;
+            aCircle = true;
+            isRuqin = false;
+            allowSound = false;
+            isIdentify = false;
+        }
+
+        //进入初始状态
+        private void Initialize()
         {
             try
             {
-                //lock (fileObj)
-                //{
-                //    StreamWriter sw = new StreamWriter("D:\\ControlGate.txt");
-                //    sw.Write(msg);
-                //    sw.Close();
-                //    sw.Dispose();
-                //    WriteLog("远程开锁：" + msg);
-                //}
-                
-                IPAddress ip = IPAddress.Parse("127.0.0.1");
-                Socket clientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                clientSocket.Connect(new IPEndPoint(ip, 65432));
-                WriteLog("连接门禁成功！\n");
-                PrintLog("连接门禁成功！\n");
-
-                byte[] recByte = new byte[1024];
-                int bytes;
-                string recStr;
-
-                clientSocket.Send(Encoding.ASCII.GetBytes(msg));
-                bytes = clientSocket.Receive(recByte, recByte.Length, 0);
-                recStr = Encoding.ASCII.GetString(recByte, 0, bytes);
-                WriteLog("发送" + msg + "\t接收" + recStr);
+                //OnControlPTZ(scannerID, 1, 1);
+                //OnActiveMSF(scannerID, 1, "ruqinyanhuozhiliu1.msf", "ruqinyanhuozhiliu1.ims");
+                //OnControlPTZ(scannerID, 2, 1);
+                //OnActiveMSF(scannerID, 2, "ruqinyanhuozhiliu2.msf", "ruqinyanhuozhiliu2.ims");
+                //OnActiveMSF(scannerID, 2, "renlian2.msf", "renlian2.ims");
+                ProcessLinkageObj(initializeObj);
             }
             catch (Exception ex)
             {
@@ -437,52 +407,87 @@ namespace CortexLinkageSolu_UI
         {
             try
             {
-                Queue<Operate> oq;
+                //Queue<Operate> oq;
                 if (type == 0)
                 {
                     WriteLog("/-------------------- 关门 --------------------/\n");
                     PrintLog("/-------------------- 关门 --------------------/\n");
-                    oq = new Queue<Operate>(closeOperate.ToArray());
-
+                    //oq = new Queue<Operate>(closeOperate.ToArray());
+                    ProcessLinkageObj(closeObj);
                     allowSound = true;
                 }
                 else
                 {
                     WriteLog("/-------------------- 开门 --------------------/\n");
                     PrintLog("/-------------------- 开门 --------------------/\n");
-                    oq = new Queue<Operate>(openOperate.ToArray());
-
+                    //oq = new Queue<Operate>(openOperate.ToArray());
+                    ProcessLinkageObj(openObj);
                     allowSound = false;
                 }
                 
-                while (oq.Count > 0)
-                {
-                    Operate cur = oq.Dequeue();
-                    switch (cur.flag)
-                    {
-                        case 0:
-                            OnDeactivateMSF(scannerID, cur.camera, cur.detail + ".msf");
-                            break;
-                        case 1:
-                            OnActiveMSF(scannerID, cur.camera, cur.detail + ".msf", cur.detail + ".ims");
-                            break;
-                        case 2:
-                            OnControlPTZ(scannerID, cur.camera, int.Parse(cur.detail));
-                            break;
-                        case 3:
-                            WriteLog("延时" + cur.detail + "s……\n");
-                            PrintLog("延时" + cur.detail + "s……\n");
-                            Thread.Sleep(int.Parse(cur.detail) * 1000);
-                            break;
-                    }
-                }
+                //while (oq.Count > 0)
+                //{
+                //    Operate cur = oq.Dequeue();
+                //    switch (cur.flag)
+                //    {
+                //        case 0:
+                //            OnDeactivateMSF(scannerID, cur.camera, cur.detail + ".msf");
+                //            break;
+                //        case 1:
+                //            OnActiveMSF(scannerID, cur.camera, cur.detail + ".msf", cur.detail + ".ims");
+                //            break;
+                //        case 2:
+                //            OnControlPTZ(scannerID, cur.camera, int.Parse(cur.detail));
+                //            break;
+                //        case 3:
+                //            WriteLog("延时" + cur.detail + "s……\n");
+                //            PrintLog("延时" + cur.detail + "s……\n");
+                //            Thread.Sleep(int.Parse(cur.detail) * 1000);
+                //            break;
+                //    }
+                //}
             }
             catch (Exception ex)
             {
                 WriteLog(ex.Message + ex.StackTrace);
             }
         }
-        
+
+        //通知海康门口机开门
+        private void InformRemoteControl(string msg)
+        {
+            try
+            {
+                //lock (fileObj)
+                //{
+                //    StreamWriter sw = new StreamWriter("D:\\ControlGate.txt");
+                //    sw.Write(msg);
+                //    sw.Close();
+                //    sw.Dispose();
+                //    WriteLog("远程开锁：" + msg);
+                //}
+
+                IPAddress ip = IPAddress.Parse("127.0.0.1");
+                Socket clientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                clientSocket.Connect(new IPEndPoint(ip, 65432));
+                WriteLog("连接门禁成功！\n");
+                PrintLog("连接门禁成功！\n");
+
+                byte[] recByte = new byte[1024];
+                int bytes;
+                string recStr;
+
+                clientSocket.Send(Encoding.ASCII.GetBytes(msg));
+                bytes = clientSocket.Receive(recByte, recByte.Length, 0);
+                recStr = Encoding.ASCII.GetString(recByte, 0, bytes);
+                WriteLog("发送" + msg + "\t接收" + recStr);
+            }
+            catch (Exception ex)
+            {
+                WriteLog(ex.Message + ex.StackTrace);
+            }
+        }
+
         //控制声波盾
         private void ControlSoundWaveShield()
         {
@@ -494,7 +499,9 @@ namespace CortexLinkageSolu_UI
             {
                 WriteLog("播放本地mp3失败！\t" + e.Message + e.StackTrace);
             }
+
             Thread.Sleep(mp3delay * 1000);  //延时启动声波盾
+
             try
             {
                 IPAddress ip = IPAddress.Parse(soundWaveShieldIP);
@@ -516,8 +523,8 @@ namespace CortexLinkageSolu_UI
                         if(jinNum > 0 && flag == 1)  //按近的模式-持续响：1、只有入侵检测近，2、远近都有
                         {
                             flag = 0;
-                            //WriteLog("报警ID：" + alarmInfo.AlarmID + "\t声波盾持续响……\n");
-                            //PrintLog("报警ID：" + alarmInfo.AlarmID + "\t声波盾持续响……\n");
+                            //WriteLog("报警ID：" + alarmInfo.alarmID + "\t声波盾持续响……\n");
+                            //PrintLog("报警ID：" + alarmInfo.alarmID + "\t声波盾持续响……\n");
                             WriteLog("声波盾持续响……报警ID：\n" + dicAlarmInfo.Keys);
 
                             clientSocket.Send(Encoding.ASCII.GetBytes("11"));
@@ -532,7 +539,7 @@ namespace CortexLinkageSolu_UI
                             {
                                 case 1:
                                     WriteLog("声波盾频率1……报警ID：" + dicAlarmInfo.Keys + "\n");
-                                    //PrintLog("报警ID：" + alarmInfo.AlarmID + "\t声波盾频率1……\n");
+                                    //PrintLog("报警ID：" + alarmInfo.alarmID + "\t声波盾频率1……\n");
 
                                     clientSocket.Send(Encoding.ASCII.GetBytes("11"));   //响
                                     bytes = clientSocket.Receive(recByte, recByte.Length, 0);
@@ -548,7 +555,7 @@ namespace CortexLinkageSolu_UI
                                     break;
                                 case 2:
                                     WriteLog("声波盾频率2……报警ID：" + dicAlarmInfo.Keys + "\n");
-                                    //PrintLog("报警ID：" + alarmInfo.AlarmID + "\t声波盾频率2……\n");
+                                    //PrintLog("报警ID：" + alarmInfo.alarmID + "\t声波盾频率2……\n");
 
                                     clientSocket.Send(Encoding.ASCII.GetBytes("11"));   //响
                                     bytes = clientSocket.Receive(recByte, recByte.Length, 0);
@@ -564,7 +571,7 @@ namespace CortexLinkageSolu_UI
                                     break;
                                 case 3:
                                     WriteLog("声波盾频率3……报警ID：" + dicAlarmInfo.Keys + "\n");
-                                    //PrintLog("报警ID：" + alarmInfo.AlarmID + "\t声波盾频率3……\n");
+                                    //PrintLog("报警ID：" + alarmInfo.alarmID + "\t声波盾频率3……\n");
 
                                     clientSocket.Send(Encoding.ASCII.GetBytes("11"));   //响
                                     bytes = clientSocket.Receive(recByte, recByte.Length, 0);
@@ -620,7 +627,243 @@ namespace CortexLinkageSolu_UI
                 PrintLog("连接声波盾失败！\n");
             }
         }
-        
+        //简易版
+        private void SimpleSoundWaveShield()
+        {
+            try
+            {
+                new MCIPlayer().Play(mp3path, 1);
+            }
+            catch (Exception e)
+            {
+                WriteLog("播放本地mp3失败！\t" + e.Message + e.StackTrace);
+            }
+
+            Thread.Sleep(mp3delay * 1000);  //延时启动声波盾
+
+            try
+            {
+                IPAddress ip = IPAddress.Parse(soundWaveShieldIP);
+                byte[] recByte = new byte[1024];
+                int bytes;
+                string recStr;
+
+                while (isRuqin)
+                {
+                    Socket clientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                    clientSocket.Connect(new IPEndPoint(ip, soundWaveShieldPort));
+                    WriteLog("连接声波盾成功！\n");
+                    //PrintLog("连接声波盾成功！\n");
+
+                    clientSocket.Send(Encoding.ASCII.GetBytes("11"));   //响
+                    bytes = clientSocket.Receive(recByte, recByte.Length, 0);
+                    recStr = Encoding.ASCII.GetString(recByte, 0, bytes);
+                    WriteLog("发送11\t接收" + recStr);
+                    Thread.Sleep(soundTime1 * 1000);
+
+                    clientSocket.Send(Encoding.ASCII.GetBytes("21"));   //停
+                    bytes = clientSocket.Receive(recByte, recByte.Length, 0);
+                    recStr = Encoding.ASCII.GetString(recByte, 0, bytes);
+                    WriteLog("发送21\t接收" + recStr);
+                    Thread.Sleep(silenceTime1 * 1000);
+
+                    if (opa4tList.Count <= 0)
+                    {
+                        DateTime curTime = DateTime.Now;
+                        TimeSpan ts = curTime.Subtract(alarmStopTime);
+                        if (ts.TotalSeconds > intrudeDelay)
+                        {
+                            lock (ruqinObj)
+                                isRuqin = false;
+
+                            WriteLog("【声波盾停止】" + ts.TotalSeconds + "s内未收到报警\n");
+                            PrintLog("【声波盾停止】" + ts.TotalSeconds + "s内未收到报警\n");
+                        }
+                    }
+                    clientSocket.Shutdown(SocketShutdown.Both);
+                    clientSocket.Close();
+                    WriteLog("关闭声波盾！\n");
+                    //PrintLog("关闭声波盾！\n");
+                }
+            }
+            catch (Exception ex)
+            {
+                WriteLog(ex.Message + ex.StackTrace);
+                WriteLog("连接声波盾失败！\n");
+                PrintLog("连接声波盾失败！\n");
+            }
+        }
+
+        //处理联动对象
+        private void ProcessLinkageObj(LinkageObj linkageObj)
+        {
+            try
+            {
+                foreach (var item in linkageObj.sequence.instruction)
+                {
+                    switch (item.operation)
+                    {
+                        case "active":
+                            GenboxHelper.algo_enable_set(item.uuid, item.detail, "1");
+                            break;
+                        case "deactive":
+                            GenboxHelper.algo_enable_set(item.uuid, item.detail, "0");
+                            break;
+                        case "position":
+                            //等袁福星查相机SDK
+                            break;
+                        case "delay":
+                            WriteLog("延时" + item.detail + "s……\n");
+                            PrintLog("延时" + item.detail + "s……\n");
+                            Thread.Sleep(int.Parse(item.detail) * 1000);
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                WriteLog(e.Message + e.StackTrace);
+            }
+        }
+
+        //轮询告警状态
+        private void PollAlarmStatus()
+        {
+            try
+            {
+                List<string> uuidList = GetDbUuid();
+
+                foreach(string uuid in uuidList)
+                {
+                    ParameterizedThreadStart threadStart = new ParameterizedThreadStart(IpcamAlarmGet);
+                    Thread thread = new Thread(threadStart);
+                    thread.Start(uuid);
+                }
+            }
+            catch (Exception ex)
+            {
+                WriteLog(ex.Message + ex.StackTrace);
+            }
+        }
+
+        //获取数据库uuid
+        private List<string> GetDbUuid()
+        {
+            List<string> uuidList = new List<string>();
+            string connStr = "server=localhost;user id=root;password=566711;database=gensys;Charset=utf8";
+            MySqlConnection conn = new MySqlConnection(connStr);
+
+            try
+            {
+                conn.Open();
+
+                string sql = "select uuid from ipcam";
+                MySqlCommand cmd = new MySqlCommand(sql, conn);
+                MySqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                    uuidList.Add(reader.GetString("uuid"));
+            }
+            catch (MySqlException ex)
+            {
+                WriteLog(ex.Message + ex.Number);
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            return uuidList;
+        }
+
+        //线程处理各ipcam的告警状态
+        private void IpcamAlarmGet(object obj)
+        {
+            string uuid = obj.ToString();
+            while (true)
+            {
+                string result = GenboxHelper.ipcam_alarm_get(uuid);
+                JObject jo = (JObject)JsonConvert.DeserializeObject(result);
+
+                try
+                {
+                    //刷脸开门
+                    int pfr = int.Parse(jo["opa4t"].ToString());
+                    if (pfr == 1)
+                    {
+                        PrintLog("刷脸通过");
+                        WriteLog("刷脸通过");
+                        InformRemoteControl("1");   //去开门
+                    }
+
+                    //入侵报警
+                    int opa4t = int.Parse(jo["opa4t"].ToString());
+                    if (opa4t == 1)
+                    {
+                        //添加进报警字典
+                        lock (dicAlarmsObj)
+                            opa4tList.Add(uuid);
+
+                        //UI更新
+                        WriteLog("【入侵开始】报警相机：" + uuid + "\n");
+                        while (!this.IsHandleCreated)
+                        {
+                        }
+                        this.BeginInvoke(new ThreadStart(delegate ()
+                        {
+                            alarmLabel.Text = "是";
+                            alarmLabel.BackColor = System.Drawing.Color.Red;
+                            printLog.AppendText("【入侵开始】报警相机：" + uuid + "\n");
+                        }));
+
+                        //启动声波盾
+                        if (!isRuqin)
+                        {
+                            lock (ruqinObj)
+                                isRuqin = true;
+                            ThreadStart threadStart = new ThreadStart(SimpleSoundWaveShield);
+                            Thread thread = new Thread(threadStart);
+                            thread.Start();
+                        }
+                    }
+                    else
+                    {
+                        if (opa4tList.Contains(uuid))
+                        {
+                            //从字典中删除该结束的报警记录
+                            lock (dicAlarmsObj)
+                                opa4tList.Remove(uuid);
+
+                            //所有报警都结束了
+                            if (dicAlarmInfo.Count <= 0)
+                                lock (alarmStopObj)
+                                    alarmStopTime = DateTime.Now; 
+
+                            //更新UI
+                            WriteLog("【入侵结束】报警相机：" + uuid + "\t结束时间：" + alarmStopTime + "\n");
+                            PrintLog("【入侵结束】报警相机：" + uuid + "\t结束时间：" + alarmStopTime + "\n");
+
+                            while (!this.IsHandleCreated)
+                            {
+                            }
+                            this.BeginInvoke(new ThreadStart(delegate ()
+                            {
+                                alarmLabel.Text = "否";
+                                alarmLabel.BackColor = System.Drawing.Color.Green;
+                            }));
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+            }
+
+        }
+
         #endregion
 
         /**********************************  CORTEX  **********************************/
@@ -682,7 +925,7 @@ namespace CortexLinkageSolu_UI
                 WriteLog(ex.Message + ex.StackTrace);
             }
         }
-        
+
         //断开服务器
         private void LogOutServer()
         {
@@ -708,13 +951,13 @@ namespace CortexLinkageSolu_UI
         {
             int loginResult;
             loginResult = cortexAPI.UserLogin("DefaultUser", "123");
-            
+
             if (loginResult == 0)
             {
                 WriteLog("与服务器[" + GetCortexServerIP() + "]连接成功\n");
-                
+
                 Initialize();   //初始状态
-                
+
                 while (!this.IsHandleCreated)
                 {
                 }
@@ -754,9 +997,9 @@ namespace CortexLinkageSolu_UI
         //报警开始回调
         private void OnAlarmStart(string eventXml, byte[] thumbnail)
         {
-            if(allowSound == true)
+            if (allowSound == true)
             {
-                ST_AlarmInfo tempAlarm = new ST_AlarmInfo();
+                AlarmInfo tempAlarm = new AlarmInfo();
 
                 XmlDocument document = new XmlDocument();
                 document.LoadXml(eventXml);
@@ -786,30 +1029,30 @@ namespace CortexLinkageSolu_UI
                             elementsByTagName = document.GetElementsByTagName("CustomerNumber");
                             if (elementsByTagName.Count > 0)
                             {
-                                tempAlarm.CustomerNumber = elementsByTagName[0].InnerText.Trim();
+                                tempAlarm.customerNumber = elementsByTagName[0].InnerText.Trim();
 
                                 elementsByTagName = document.GetElementsByTagName("FeedNumber");
                                 if (elementsByTagName.Count > 0)
                                 {
-                                    tempAlarm.FeedNumber = elementsByTagName[0].InnerText.Trim();
+                                    tempAlarm.feedNumber = elementsByTagName[0].InnerText.Trim();
 
                                     elementsByTagName = document.GetElementsByTagName("DeviceAlarmID"); //获取报警ID
                                     if (elementsByTagName.Count > 0)
                                     {
-                                        tempAlarm.AlarmID = elementsByTagName[0].InnerText.Trim();
+                                        tempAlarm.alarmID = elementsByTagName[0].InnerText.Trim();
 
-                                        tempAlarm.IsAlarm = true;
-                                        tempAlarm.AlarmName = alarmName;
-                                        tempAlarm.AlarmStartTime = DateTime.Now;
-                                        tempAlarm.AlarmStopTime = DateTime.Now;
+                                        tempAlarm.isAlarm = true;
+                                        tempAlarm.alarmName = alarmName;
+                                        tempAlarm.alarmStartTime = DateTime.Now;
+                                        tempAlarm.alarmStopTime = DateTime.Now;
 
-                                        if (tempAlarm.AlarmName == "入侵检测近")
+                                        if (tempAlarm.alarmName == "入侵检测近")
                                         {
                                             lastMode = 0;
                                             tempAlarm.mode = modeForRuqinJin;
                                             tempAlarm.frequency = frequencyForRuqinJin;
                                             lock (alarmNumObj)
-                                                jinNum ++;
+                                                jinNum++;
                                         }
                                         else
                                         {
@@ -817,15 +1060,15 @@ namespace CortexLinkageSolu_UI
                                             tempAlarm.mode = modeForRuqinYuan;
                                             tempAlarm.frequency = frequencyForRuqinYuan;
                                             lock (alarmNumObj)
-                                                yuanNum ++;
+                                                yuanNum++;
                                         }
 
                                         //添加进报警字典
                                         lock (dicAlarmsObj)
-                                            dicAlarmInfo.Add(tempAlarm.AlarmID, tempAlarm);
+                                            dicAlarmInfo.Add(tempAlarm.alarmID, tempAlarm);
 
                                         //UI更新
-                                        WriteLog("【入侵开始】报警ID：" + tempAlarm.AlarmID + "\t类型：" + tempAlarm.AlarmName + "\t开始时间：" + tempAlarm.AlarmStartTime + "\n");
+                                        WriteLog("【入侵开始】报警ID：" + tempAlarm.alarmID + "\t类型：" + tempAlarm.alarmName + "\t开始时间：" + tempAlarm.alarmStartTime + "\n");
                                         while (!this.IsHandleCreated)
                                         {
                                         }
@@ -833,7 +1076,7 @@ namespace CortexLinkageSolu_UI
                                         {
                                             alarmLabel.Text = "是";
                                             alarmLabel.BackColor = System.Drawing.Color.Red;
-                                            printLog.AppendText("【入侵开始】报警ID：" + tempAlarm.AlarmID + "\t类型：" + tempAlarm.AlarmName + "\t开始时间：" + tempAlarm.AlarmStartTime + "\n");
+                                            printLog.AppendText("【入侵开始】报警ID：" + tempAlarm.alarmID + "\t类型：" + tempAlarm.alarmName + "\t开始时间：" + tempAlarm.alarmStartTime + "\n");
                                         }));
 
                                         //启动声波盾
@@ -859,7 +1102,7 @@ namespace CortexLinkageSolu_UI
         {
             if (allowSound == true)
             {
-                ST_AlarmInfo tempAlarm = new ST_AlarmInfo();
+                AlarmInfo tempAlarm = new AlarmInfo();
 
                 XmlDocument document = new XmlDocument();
                 document.LoadXml(eventXml);
@@ -876,16 +1119,16 @@ namespace CortexLinkageSolu_UI
                         {
                             //从字典中删除该结束的报警记录
                             lock (alarmNumObj)
-                                if (dicAlarmInfo[alarmID].AlarmName == "入侵检测近")
-                                    jinNum --;
+                                if (dicAlarmInfo[alarmID].alarmName == "入侵检测近")
+                                    jinNum--;
                                 else
-                                    yuanNum --;
+                                    yuanNum--;
                             lock (dicAlarmsObj)
                                 dicAlarmInfo.Remove(alarmID);
-                            
+
                             //所有报警都结束了
                             if (dicAlarmInfo.Count <= 0)
-                                lock(alarmStopObj)
+                                lock (alarmStopObj)
                                     alarmStopTime = DateTime.Now;
 
                             //更新UI
@@ -956,7 +1199,7 @@ namespace CortexLinkageSolu_UI
             ip = cortexAPI.GetServerIP();
             return ip;
         }
-        
+
         //获取错误名称
         private string GetErrorName(int code)
         {
@@ -987,14 +1230,14 @@ namespace CortexLinkageSolu_UI
             }
             return name;
         }
-        
+
         //禁用规则，并不需要具体的规则文件
         private void OnDeactivateMSF(int bwid, int feedid, string msfName)
         {
             try
             {
                 int rtn = cortexAPI.DeactivateMSF(bwid, feedid, MateUtil.MU.enMsfCategory.SinglePreset, msfName);
-                if(rtn == 0)
+                if (rtn == 0)
                 {
                     WriteLog("禁用 规则" + msfName + " 成功！\n");
                     PrintLog("禁用 规则" + msfName + " 成功！\n");
@@ -1010,7 +1253,7 @@ namespace CortexLinkageSolu_UI
                 WriteLog(ex.Message + ex.StackTrace);
             }
         }
-        
+
         //激活规则，考虑修改读取路径
         private void OnActiveMSF(int bwid, int feedid, string msfName, string imsName)
         {
@@ -1062,12 +1305,12 @@ namespace CortexLinkageSolu_UI
                 PrintLog("切换cam" + feedid + " 到预置位" + pos + " 失败，返回：" + rtn + "\n");
             }
         }
-        
+
         #endregion
 
         /**********************************  UI交互  **********************************/
         #region UI交互
-        
+
         //运行停止
         private void button1_Click(object sender, EventArgs e)
         {
@@ -1083,7 +1326,7 @@ namespace CortexLinkageSolu_UI
                 button1.Text = "停止";
                 button2.Enabled = true;
 
-                RegisterToServer(); //连接注册到cortex服务器
+                //RegisterToServer(); //连接注册到cortex服务器
                 //InformRemoteControl("0");
             }
             else  //停止
@@ -1095,7 +1338,7 @@ namespace CortexLinkageSolu_UI
                 isAuto = false;
                 button2.Enabled = false;
 
-                LogOutServer();
+                //LogOutServer();
             }
         }
 
